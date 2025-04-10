@@ -41,7 +41,7 @@ class CartCard extends StatelessWidget {
                         fontWeight: FontWeight.w400,
                         fontSize: 16,
                         maxLines: 3,
-                        textOverflow: TextOverflow.ellipsis,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     const SizedBox(width: 5),
@@ -52,7 +52,8 @@ class CartCard extends StatelessWidget {
                       child: Container(
                         height: 25,
                         width: 25,
-                        decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.black),
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle, color: Colors.black),
                         child: const Icon(
                           Icons.close,
                           color: Colors.white,
@@ -64,13 +65,14 @@ class CartCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 10.0),
                 Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: Colors.blue,
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextBuilder(
-                      text: cart.category,
+                      text: cart.category ?? 'Uncategorized',
                       fontSize: 12,
                       color: Colors.white,
                     )),

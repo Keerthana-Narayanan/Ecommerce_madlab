@@ -1,51 +1,45 @@
 import 'package:super_store_e_commerce_flutter/imports.dart';
+import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class TextBuilder extends StatelessWidget {
-  final String? text;
+  final String text;
   final double? fontSize;
-  final Color? color;
   final FontWeight? fontWeight;
-  final double? latterSpacing;
-  final TextOverflow? textOverflow;
-  final int? maxLines;
-  final TextAlign? textAlign;
-  final double? height;
-  final double? wordSpacing;
-  final TextDecoration? textDecoration;
+  final Color? color;
   final FontStyle? fontStyle;
+  final TextDecoration? decoration;
+  final TextAlign? textAlign;
+  final int? maxLines;
+  final TextOverflow? overflow;
+
   const TextBuilder({
     Key? key,
-    this.text,
+    required this.text,
     this.fontSize,
-    this.color,
-    this.textOverflow,
     this.fontWeight,
-    this.latterSpacing,
-    this.maxLines,
-    this.textAlign,
-    this.height,
-    this.wordSpacing,
-    this.textDecoration,
+    this.color,
     this.fontStyle,
+    this.decoration,
+    this.textAlign,
+    this.maxLines,
+    this.overflow,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      text!,
-      style: GoogleFonts.poppins(
-        fontSize: fontSize,
-        color: color,
-        fontWeight: fontWeight,
-        letterSpacing: latterSpacing,
-        height: height,
-        wordSpacing: wordSpacing,
-        decoration: textDecoration,
-        fontStyle: fontStyle,
-      ),
+      text,
       maxLines: maxLines,
-      overflow: textOverflow,
+      overflow: overflow,
       textAlign: textAlign,
+      style: TextStyle(
+        color: color,
+        fontSize: fontSize,
+        fontWeight: fontWeight,
+        fontStyle: fontStyle,
+        decoration: decoration,
+      ),
     );
   }
 }

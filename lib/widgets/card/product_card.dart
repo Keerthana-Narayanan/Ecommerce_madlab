@@ -46,20 +46,21 @@ class ProductCard extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                       fontSize: 16,
                       maxLines: 3,
-                      textOverflow: TextOverflow.ellipsis,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   const SizedBox(height: 5),
                   Align(
                     alignment: Alignment.topLeft,
                     child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
                         decoration: BoxDecoration(
                           color: Colors.blue,
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: TextBuilder(
-                          text: product.category,
+                          text: product.category ?? 'Uncategorized',
                           fontSize: 12,
                           color: Colors.white,
                         )),
@@ -88,18 +89,24 @@ class ProductCard extends StatelessWidget {
                           splashColor: Colors.blue,
                           tooltip: 'Add to cart',
                           onPressed: () {
-                            final ScaffoldMessengerState addToCartMsg = ScaffoldMessenger.of(context);
+                            final ScaffoldMessengerState addToCartMsg =
+                                ScaffoldMessenger.of(context);
                             addToCartMsg.showSnackBar(
                               SnackBar(
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)),
                                 backgroundColor: Colors.black,
                                 action: SnackBarAction(
                                     label: 'Go to Cart',
                                     onPressed: () {
-                                      Navigator.push(context, MaterialPageRoute(builder: (_) => const Cart()));
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (_) => const Cart()));
                                     }),
                                 behavior: SnackBarBehavior.floating,
-                                content: const TextBuilder(text: 'Product added to cart'),
+                                content: const TextBuilder(
+                                    text: 'Product added to cart'),
                               ),
                             );
                             CartModel cartModel = CartModel(

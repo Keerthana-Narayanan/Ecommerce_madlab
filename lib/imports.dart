@@ -2,7 +2,7 @@ export 'dart:convert';
 export 'view/init_screen/splash.dart';
 export 'package:flutter/material.dart';
 export 'package:provider/provider.dart';
-export 'package:flutter/foundation.dart';
+export 'package:flutter/foundation.dart' hide kIsWeb;
 export 'package:super_store_e_commerce_flutter/view/cart/cart.dart';
 export 'package:super_store_e_commerce_flutter/view/init_screen/login.dart';
 export 'package:super_store_e_commerce_flutter/view/init_screen/register.dart';
@@ -22,3 +22,19 @@ export 'package:super_store_e_commerce_flutter/utils/url_launch.dart';
 export 'package:icons_plus/icons_plus.dart';
 export 'package:super_store_e_commerce_flutter/model/product_model.dart';
 export 'package:super_store_e_commerce_flutter/controller/cart_provider.dart';
+export 'package:super_store_e_commerce_flutter/controller/order_provider.dart';
+export 'package:super_store_e_commerce_flutter/controller/product_provider.dart';
+export 'package:super_store_e_commerce_flutter/model/user_model.dart';
+export 'package:super_store_e_commerce_flutter/view/orders/orders_page.dart';
+export 'package:super_store_e_commerce_flutter/view/orders/order_details_page.dart';
+export 'package:super_store_e_commerce_flutter/view/contact/contact_page.dart';
+
+// Firebase Exports - Import these directly in files that need them to avoid name collisions
+// export 'package:firebase_core/firebase_core.dart';
+// export 'package:firebase_auth/firebase_auth.dart';
+// export 'package:cloud_firestore/cloud_firestore.dart';
+// export 'package:firebase_storage/firebase_storage.dart';
+
+// AuthProvider - Import directly to avoid name collision with Firebase
+export 'package:super_store_e_commerce_flutter/controller/auth_provider.dart'
+    show AuthProvider;
