@@ -1,8 +1,10 @@
 import 'dart:convert';
 
-List<ProductModel> productModelFromJson(String str) => List<ProductModel>.from(json.decode(str).map((x) => ProductModel.fromJson(x)));
+List<ProductModel> productModelFromJson(String str) => List<ProductModel>.from(
+    json.decode(str).map((x) => ProductModel.fromJson(x)));
 
-String productModelToJson(List<ProductModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String productModelToJson(List<ProductModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ProductModel {
   int? id;
@@ -12,6 +14,9 @@ class ProductModel {
   String? category;
   String? image;
   Rating? rating;
+  List<String>? availableSizes;
+  String? gender;
+  String? subCategory;
 
   ProductModel({
     this.id,
@@ -21,6 +26,9 @@ class ProductModel {
     this.category,
     this.image,
     this.rating,
+    this.availableSizes,
+    this.gender,
+    this.subCategory,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
@@ -31,6 +39,11 @@ class ProductModel {
         category: json["category"]!,
         image: json["image"],
         rating: json["rating"] == null ? null : Rating.fromJson(json["rating"]),
+        availableSizes: json["availableSizes"] == null
+            ? null
+            : List<String>.from(json["availableSizes"].map((x) => x)),
+        gender: json["gender"],
+        subCategory: json["subCategory"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -41,6 +54,11 @@ class ProductModel {
         "category": category,
         "image": image,
         "rating": rating?.toJson(),
+        "availableSizes": availableSizes == null
+            ? null
+            : List<dynamic>.from(availableSizes!.map((x) => x)),
+        "gender": gender,
+        "subCategory": subCategory,
       };
 }
 

@@ -6,6 +6,7 @@ class CartModel {
   double? price;
   String? category;
   String? image;
+  String? size;
 
   CartModel({
     this.id,
@@ -15,6 +16,7 @@ class CartModel {
     this.price,
     this.category,
     this.image,
+    this.size,
   });
 
   CartModel copyWith({
@@ -25,6 +27,7 @@ class CartModel {
     double? price,
     String? category,
     String? image,
+    String? size,
   }) {
     return CartModel(
       id: id ?? this.id,
@@ -34,6 +37,7 @@ class CartModel {
       price: price ?? this.price,
       category: category ?? this.category,
       image: image ?? this.image,
+      size: size ?? this.size,
     );
   }
 
@@ -46,6 +50,7 @@ class CartModel {
       price: json['price'],
       category: json['category'],
       image: json['image'],
+      size: json['size'],
     );
   }
 
@@ -58,6 +63,7 @@ class CartModel {
     data['price'] = price;
     data['category'] = category;
     data['image'] = image;
+    data['size'] = size;
     return data;
   }
 }

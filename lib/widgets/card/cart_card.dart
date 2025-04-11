@@ -77,6 +77,34 @@ class CartCard extends StatelessWidget {
                       color: Colors.white,
                     )),
                 const SizedBox(height: 5),
+                if (cart.size != null) ...[
+                  Row(
+                    children: [
+                      const TextBuilder(
+                        text: 'Size: ',
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(color: Colors.blue, width: 0.5),
+                        ),
+                        child: TextBuilder(
+                          text: cart.size!,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 5),
+                ],
                 Row(
                   children: [
                     Row(

@@ -56,6 +56,47 @@ class ProductProvider with ChangeNotifier {
     }
   }
 
+  // Fetch products by gender
+  Future<void> fetchProductsByGender(String gender) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      _filteredProducts = await _productService.getProductsByGender(gender);
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _isLoading = false;
+      _error = 'Failed to load products for this gender.';
+      notifyListeners();
+      if (kDebugMode) {
+        print('Error fetching products by gender: $e');
+      }
+    }
+  }
+
+  // Fetch products by subcategory
+  Future<void> fetchProductsBySubCategory(String subCategory) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      _filteredProducts =
+          await _productService.getProductsBySubCategory(subCategory);
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _isLoading = false;
+      _error = 'Failed to load products for this subcategory.';
+      notifyListeners();
+      if (kDebugMode) {
+        print('Error fetching products by subcategory: $e');
+      }
+    }
+  }
+
   // Get product by ID
   Future<ProductModel?> getProductById(int productId) async {
     try {
@@ -82,9 +123,31 @@ class ProductProvider with ChangeNotifier {
         final categoryMatch =
             product.category?.toLowerCase().contains(query.toLowerCase()) ??
                 false;
-        return titleMatch || descriptionMatch || categoryMatch;
+        final subCategoryMatch =
+            product.subCategory?.toLowerCase().contains(query.toLowerCase()) ??
+                false;
+        return titleMatch ||
+            descriptionMatch ||
+            categoryMatch ||
+            subCategoryMatch;
       }).toList();
     }
+    notifyListeners();
+  }
+
+  // Filter products by size
+  void filterBySize(String size) {
+    _filteredProducts = _products.where((product) {
+      return product.availableSizes?.contains(size) ?? false;
+    }).toList();
+    notifyListeners();
+  }
+
+  // Filter products by gender
+  void filterByGender(String gender) {
+    _filteredProducts = _products.where((product) {
+      return product.gender?.toLowerCase() == gender.toLowerCase();
+    }).toList();
     notifyListeners();
   }
 
@@ -131,5 +194,38 @@ class ProductProvider with ChangeNotifier {
       }
     }
     return categories.toList();
+  }
+
+  // Get unique subcategories
+  List<String> getSubCategories() {
+    final Set<String> subCategories = {};
+    for (var product in _products) {
+      if (product.subCategory != null) {
+        subCategories.add(product.subCategory!);
+      }
+    }
+    return subCategories.toList();
+  }
+
+  // Get unique genders
+  List<String> getGenders() {
+    final Set<String> genders = {};
+    for (var product in _products) {
+      if (product.gender != null) {
+        genders.add(product.gender!);
+      }
+    }
+    return genders.toList();
+  }
+
+  // Get unique sizes
+  List<String> getAvailableSizes() {
+    final Set<String> sizes = {};
+    for (var product in _products) {
+      if (product.availableSizes != null) {
+        sizes.addAll(product.availableSizes!);
+      }
+    }
+    return sizes.toList()..sort();
   }
 }
