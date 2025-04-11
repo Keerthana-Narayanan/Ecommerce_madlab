@@ -302,20 +302,6 @@ class ProductService {
         rating: rating,
       ),
       ProductModel(
-        id: 9,
-        title: "Traditional Saree",
-        price: 3999.99,
-        description:
-            "Beautiful traditional saree with intricate embroidery, perfect for special occasions.",
-        category: "clothing",
-        subCategory: "saree",
-        gender: "women",
-        image:
-            "https://images.unsplash.com/photo-1610030469668-8e04a1fe73d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
-        availableSizes: ["Free Size"],
-        rating: rating,
-      ),
-      ProductModel(
         id: 10,
         title: "Party Wear Crop Top",
         price: 799.99,

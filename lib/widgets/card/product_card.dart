@@ -8,7 +8,6 @@ class ProductCard extends StatelessWidget {
     Size size = MediaQuery.sizeOf(context);
     final cart = Provider.of<CartProvider>(context);
     return Container(
-      padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(color: Colors.blue, width: 0.5),
@@ -16,22 +15,21 @@ class ProductCard extends StatelessWidget {
       ),
       child: InkWell(
         onTap: () => _showProductDetails(context, size),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-                Container(
-                  height: size.width * 0.36, // Increase image height
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(7.5),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Image section with square ratio
+              Stack(
+                children: [
+                  AspectRatio(
+                    aspectRatio: 1.0, // Square image
                     child: Image.network(
                       product.image!,
+                      width: double.infinity,
+                      height: double.infinity,
                       fit: BoxFit.cover,
                       loadingBuilder: (context, child, loadingProgress) {
                         if (loadingProgress == null) return child;
@@ -44,138 +42,117 @@ class ProductCard extends StatelessWidget {
                           ),
                         );
                       },
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          color: Colors.grey[200],
-                          child: const Center(
-                            child: Icon(Icons.image_not_supported,
-                                color: Colors.grey),
-                          ),
-                        );
-                      },
                     ),
                   ),
-                ),
-                if (product.gender != null)
+                  if (product.gender != null)
+                    Positioned(
+                      top: 5,
+                      right: 5,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: _getGenderColor(product.gender!),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          product.gender!.toUpperCase(),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  // Product info overlay
                   Positioned(
-                    top: 5,
-                    right: 5,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
                     child: Container(
+                      color: Colors.black.withOpacity(0.7),
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 6, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: _getGenderColor(product.gender!),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Text(
-                        product.gender!.toUpperCase(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                        ),
+                          horizontal: 6, vertical: 4),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  product.title!,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Text(
+                                  '₹${product.price!.round()}',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.right,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 2),
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 4, vertical: 2),
+                                decoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  borderRadius: BorderRadius.circular(3),
+                                ),
+                                child: Text(
+                                  '${product.subCategory ?? product.category} • ${product.availableSizes?.length ?? 0} sizes',
+                                  style: const TextStyle(
+                                    fontSize: 10,
+                                    color: Colors.white,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              const Spacer(),
+                              InkWell(
+                                onTap: () => _showQuickAddDialog(context, size),
+                                child: Container(
+                                  padding: const EdgeInsets.all(2),
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue,
+                                    borderRadius: BorderRadius.circular(3),
+                                  ),
+                                  child: const Icon(
+                                    Icons.add_shopping_cart_rounded,
+                                    size: 14,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 3.0, vertical: 1.0), // Further reduced padding
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min, // Minimize extra space
-                children: [
-                  TextBuilder(
-                    text: product.title!,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 13, // Slightly smaller text
-                    maxLines: 2, // Allow 2 lines for title
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 1), // Further reduced spacing
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 6, vertical: 2), // Reduced padding
-                            decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: TextBuilder(
-                              text: product.subCategory != null
-                                  ? '${product.subCategory}'
-                                  : product.category ?? 'Uncategorized',
-                              fontSize: 9, // Smaller text
-                              color: Colors.white,
-                            )),
-                      ),
-                      const SizedBox(width: 4),
-                      if (product.availableSizes != null &&
-                          product.availableSizes!.isNotEmpty)
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 6, vertical: 2), // Reduced padding
-                          decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Text(
-                            product.availableSizes!.length > 2
-                                ? "${product.availableSizes!.length} sizes"
-                                : product.availableSizes!.join(", "),
-                            style: TextStyle(
-                              fontSize: 9, // Smaller text
-                              color: Colors.grey[800],
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                  const SizedBox(height: 1), // Further reduced spacing
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Row(
-                          children: [
-                            const TextBuilder(
-                              text: '₹ ',
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue,
-                              fontSize: 13, // Smaller text
-                            ),
-                            TextBuilder(
-                              text: product.price!.round().toString(),
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue,
-                              fontSize: 13, // Smaller text
-                            ),
-                          ],
-                        ),
-                      ),
-                      IconButton(
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
-                        splashColor: Colors.blue,
-                        tooltip: 'Add to cart',
-                        onPressed: () {
-                          // Show quick add dialog with size selection
-                          _showQuickAddDialog(context, size);
-                        },
-                        icon: const Icon(Icons.add_shopping_cart_rounded,
-                            size: 18), // Smaller icon
-                        color: Colors.blue,
-                      ),
-                    ],
                   ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -242,7 +219,6 @@ class ProductCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Image
                   InteractiveViewer(
                     minScale: 0.1,
                     maxScale: 1.9,
@@ -255,8 +231,6 @@ class ProductCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-
-                  // Price
                   Row(
                     children: [
                       Text(
@@ -293,8 +267,6 @@ class ProductCard extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 12),
-
-                  // Category & Gender
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
@@ -341,8 +313,6 @@ class ProductCard extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 16),
-
-                  // Description
                   if (product.description != null) ...[
                     const Text(
                       'Description',
@@ -358,8 +328,6 @@ class ProductCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                   ],
-
-                  // Available Sizes - REQUIRED SELECTION
                   if (product.availableSizes != null &&
                       product.availableSizes!.isNotEmpty) ...[
                     Row(
@@ -446,11 +414,9 @@ class ProductCard extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(vertical: 12),
                         ),
                         onPressed: () {
-                          // Check if size selection is required and a size is selected
                           if (product.availableSizes != null &&
                               product.availableSizes!.isNotEmpty &&
                               selectedSize == null) {
-                            // Show error or handle the case where size is required
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text('Please select a size'),
@@ -460,7 +426,6 @@ class ProductCard extends StatelessWidget {
                             return;
                           }
 
-                          // Show confirmation popup
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
@@ -559,7 +524,6 @@ class ProductCard extends StatelessWidget {
                                       ),
                                       const Text('1'),
                                       const SizedBox(width: 8),
-                                      // Could add quantity control here in future
                                     ],
                                   ),
                                 ],
@@ -575,7 +539,6 @@ class ProductCard extends StatelessWidget {
                                     foregroundColor: Colors.white,
                                   ),
                                   onPressed: () {
-                                    // Add to cart
                                     final cart = Provider.of<CartProvider>(
                                         context,
                                         listen: false);
@@ -591,13 +554,9 @@ class ProductCard extends StatelessWidget {
                                     );
                                     cart.addItem(cartModel);
 
-                                    // Close both dialogs
-                                    Navigator.pop(
-                                        context); // Close confirmation popup
-                                    Navigator.pop(
-                                        context); // Close product details popup
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
 
-                                    // Show success message
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(selectedSize != null
@@ -672,7 +631,6 @@ class ProductCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Product info row
                 Row(
                   children: [
                     ClipRRect(
@@ -722,8 +680,6 @@ class ProductCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 16),
-
-                // Size selection
                 if (product.availableSizes != null &&
                     product.availableSizes!.isNotEmpty) ...[
                   Row(
@@ -810,11 +766,9 @@ class ProductCard extends StatelessWidget {
                       foregroundColor: Colors.white,
                     ),
                     onPressed: () {
-                      // Check if size selection is required and a size is selected
                       if (product.availableSizes != null &&
                           product.availableSizes!.isNotEmpty &&
                           selectedSize == null) {
-                        // Show error message
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('Please select a size'),
@@ -824,7 +778,6 @@ class ProductCard extends StatelessWidget {
                         return;
                       }
 
-                      // Add to cart
                       final cart =
                           Provider.of<CartProvider>(context, listen: false);
                       CartModel cartModel = CartModel(
@@ -840,7 +793,6 @@ class ProductCard extends StatelessWidget {
                       cart.addItem(cartModel);
                       Navigator.pop(context);
 
-                      // Show confirmation
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(selectedSize != null
